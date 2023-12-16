@@ -19,6 +19,7 @@ docker create --name $POCKETMINE_NAME \
 	--env-file=$ENV_FILE \
 	$DOCKER_IMAGE
 
+ls -la $TESTS_PATH
 chown -R 1000:1000 $TESTS_PATH
 docker cp $TESTS_PATH/shared/data $POCKETMINE_NAME:/data/plugin_data
 docker cp $TESTS_PATH/suitetest/$SUITE_TEST/config $POCKETMINE_NAME:/data/plugin_data
