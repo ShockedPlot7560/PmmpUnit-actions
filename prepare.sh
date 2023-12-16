@@ -17,15 +17,13 @@ docker pull $DOCKER_IMAGE
 docker create --name $POCKETMINE_NAME \
 	--network $NETWORK_NAME \
 	--env-file=$ENV_FILE \
+	-u root \
 	$DOCKER_IMAGE
 
-ls -la $TESTS_PATH
-chown -R 1000:1000 $TESTS_PATH
 docker cp $TESTS_PATH/shared/data $POCKETMINE_NAME:/data/plugin_data
 docker cp $TESTS_PATH/suitetest/$SUITE_TEST/config $POCKETMINE_NAME:/data/plugin_data
 docker cp $TESTS_PATH/suitetest/$SUITE_TEST/plugins $POCKETMINE_NAME:/
 mkdir /tmp/PmmpUnit
-chown -R 1000:1000 /tmp/PmmpUnit
 docker cp /tmp/PmmpUnit $POCKETMINE_NAME:/data/plugin_data # create folder for PmmpUnit
 docker cp $TESTS_PATH/suitetest/$SUITE_TEST/tests/. $POCKETMINE_NAME:/data/plugin_data/PmmpUnit/tests
 
