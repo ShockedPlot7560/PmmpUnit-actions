@@ -1,0 +1,36 @@
+name: 'PmmpUnit Tests'
+description: 'Run PmmpUnit Tests'
+inputs:
+  suite-test:
+    description: "Suite test to run"
+    required: true
+  tests-path:
+    description: 'Path to tests'
+    required: true
+    default: 'tests/pmmpunit'
+  php-version:
+    description: 'PHP version'
+    required: true
+    default: '8.1'
+  env-file:
+    description: 'Path to env file'
+    required: false
+    default: '.env'
+outputs:
+  failed-tests:
+    description: 'Number of failed tests'
+runs:
+  using: 'composite'
+  steps:
+    - name: 'Prepare environment'
+      shell: bash
+      id: "prepare"
+      run: "${{github.action_path}}/prepare.sh ${{ inputs.php-version }} ${{ inputs.tests-path }} ${{ inputs.suite-test }} ${{ inputs.env-file }}"
+    - name: 'Run tests'
+      shell: bash
+      id: "run"
+      run: "${{github.action_path}}/run.sh ${{ outputs.prepare.pocketmine-name }}"
+    - name: 'Collect results'
+      shell: bash
+      id: "finish"
+      run: "${{github.action_path}}/exitpoint.sh ${{ outputs.prepare.pocketmine-name }}"
