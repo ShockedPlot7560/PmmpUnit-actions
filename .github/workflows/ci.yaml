@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  integration-tests-remote:
+    name: Integration testing for base repository
+    runs-on: ${{ matrix.image }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        image: [ubuntu-20.04]
+        suittest: ["normal", "with_plugin"]
+        php: ["8.1", "8.2", "8.3"]
+
+    steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+
+        - name: Clone ShockedPlot7560/PmmpUnit repository
+          uses: actions/checkout@v4
+          with:
+            repository: ShockedPlot7560/PmmpUnit
+            path: PmmpUnit
+            fetch-depth: 1
+
+        - name: Test action
+          uses: ./
+          with:
+            php-version: ${{ matrix.php }}
+            suite-test: ${{ matrix.suittest }}
+            tests-path: PmmpUnit/tests/pmmpunit
+
+  integration-tests-custom:
+    name: Integration testing for specific action
+    runs-on: ${{ matrix.image }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        image: [ubuntu-20.04]
+        suittest: ["no-test"]
+        php: ["8.1", "8.2", "8.3"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Clone ShockedPlot7560/PmmpUnit repository
+        uses: actions/checkout@v4
+        with:
+          repository: ShockedPlot7560/PmmpUnit
+          path: PmmpUnit
+          fetch-depth: 1
+
+      - name: Test action
+        uses: ./
+        with:
+          php-version: ${{ matrix.php }}
+          suite-test: ${{ matrix.suittest }}
+          tests-path: tests

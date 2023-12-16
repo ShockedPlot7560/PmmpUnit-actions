@@ -8,9 +8,10 @@ ENV_FILE=$4
 DOCKER_IMAGE="ghcr.io/shockedplot7560/pmmpunit/tests-runner-php${PHP_VERSION}:latest"
 NETWORK_NAME=$CONTAINER_PREFIX-network
 POCKETMINE_NAME=$CONTAINER_PREFIX-pocketmine
+PWD=$(pwd)
 
 docker network create $NETWORK_NAME || true
-docker rm $POCKETMINE_NAME || true
+docker rm -f $POCKETMINE_NAME || true
 
 docker pull $DOCKER_IMAGE
 docker create --name $POCKETMINE_NAME \
@@ -18,8 +19,13 @@ docker create --name $POCKETMINE_NAME \
 	--env-file=$ENV_FILE \
 	$DOCKER_IMAGE
 
+chown -R 1000:1000 $TESTS_PATH
 docker cp $TESTS_PATH/shared/data $POCKETMINE_NAME:/data/plugin_data
 docker cp $TESTS_PATH/suitetest/$SUITE_TEST/config $POCKETMINE_NAME:/data/plugin_data
 docker cp $TESTS_PATH/suitetest/$SUITE_TEST/plugins $POCKETMINE_NAME:/
+mkdir /tmp/PmmpUnit
+chown -R 1000:1000 /tmp/PmmpUnit
+docker cp /tmp/PmmpUnit $POCKETMINE_NAME:/data/plugin_data # create folder for PmmpUnit
+docker cp $TESTS_PATH/suitetest/$SUITE_TEST/tests/. $POCKETMINE_NAME:/data/plugin_data/PmmpUnit/tests
 
-echo "pocketmine-name=$POCKETMINE_NAME" >> $GITHUB_OUTPUT
+echo "pocketmine_name=$POCKETMINE_NAME" >> $GITHUB_OUTPUT
