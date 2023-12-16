@@ -18,9 +18,9 @@ inputs:
     required: false
     default: '.env'
   timeout:
-    description: 'Timeout for tests'
+    description: 'Timeout for tests (in seconds)'
     required: false
-    default: '10'
+    default: '60'
 
 outputs:
   failed-tests:
@@ -36,9 +36,8 @@ runs:
 
     - name: 'Run tests'
       shell: bash
-      timeout-minutes: ${{ inputs.timeout }}
       id: "run"
-      run: "${{github.action_path}}/run.sh ${{ steps.prepare.outputs.pocketmine_name }}"
+      run: "${{github.action_path}}/run.sh ${{ steps.prepare.outputs.pocketmine_name }} ${{ inputs.timeout }}"
 
     - name: 'Collect results'
       shell: bash
