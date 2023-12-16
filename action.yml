@@ -32,14 +32,14 @@ runs:
     - name: 'Prepare environment'
       shell: bash
       id: "prepare"
-      run: "${{github.action_path}}/prepare.sh ${{ inputs.php-version }} ${{ inputs.tests-path }} ${{ inputs.suite-test }} ${{ inputs.env-file }}"
+      run: "${{github.action_path}}prepare.sh ${{ inputs.php-version }} ${{ inputs.tests-path }} ${{ inputs.suite-test }} ${{ inputs.env-file }}"
 
     - name: 'Run tests'
       shell: bash
       id: "run"
-      run: "${{github.action_path}}/run.sh ${{ steps.prepare.outputs.pocketmine_name }} ${{ inputs.timeout }}"
+      run: "${{github.action_path}}run.sh ${{ steps.prepare.outputs.pocketmine_name }} ${{ inputs.timeout }}"
 
     - name: 'Collect results'
       shell: bash
       id: "finish"
-      run: "${{github.action_path}}/exitpoint.sh ${{ steps.prepare.outputs.pocketmine_name }}"
+      run: "${{github.action_path}}exitpoint.sh ${{ steps.prepare.outputs.pocketmine_name }}"
