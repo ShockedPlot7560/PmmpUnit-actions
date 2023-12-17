@@ -63,3 +63,33 @@ jobs:
           php-version: ${{ matrix.php }}
           suite-test: ${{ matrix.suittest }}
           tests-path: tests
+
+  test-mysql:
+    name: Test MYSQL Service
+    runs-on: ${{ matrix.image }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        image: [ubuntu-20.04]
+        suittest: ["no-test"]
+        php: ["8.1"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Clone ShockedPlot7560/PmmpUnit repository
+        uses: actions/checkout@v4
+        with:
+          repository: ShockedPlot7560/PmmpUnit
+          path: PmmpUnit
+          fetch-depth: 1
+
+      - name: Test action
+        uses: ./
+        with:
+          php-version: ${{ matrix.php }}
+          suite-test: ${{ matrix.suittest }}
+          tests-path: tests
+          mysql: "true"

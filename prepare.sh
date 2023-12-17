@@ -9,9 +9,16 @@ DOCKER_IMAGE="ghcr.io/shockedplot7560/pmmpunit/tests-runner-php${PHP_VERSION}:la
 NETWORK_NAME=$CONTAINER_PREFIX-network
 POCKETMINE_NAME=$CONTAINER_PREFIX-pocketmine
 PWD=$(pwd)
+MYSQL_ENABLED=$5
+MYSQL_VERSION=$6
+MYSQL_ENTRYPOINT=$7
 
 docker network create $NETWORK_NAME || true
 docker rm -f $POCKETMINE_NAME || true
+
+if [ -n "$MYSQL_ENABLED" ] && [ "$MYSQL_ENABLED" = "true" ]; then
+	./external/mysql/prepare.sh $NETWORK_NAME $CONTAINER_PREFIX $ENV_FILE $MYSQL_VERSION $MYSQL_ENTRYPOINT
+fi
 
 docker pull $DOCKER_IMAGE
 docker create --name $POCKETMINE_NAME \

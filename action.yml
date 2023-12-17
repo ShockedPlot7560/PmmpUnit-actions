@@ -21,6 +21,18 @@ inputs:
     description: 'Timeout for tests (in seconds)'
     required: false
     default: '60'
+  mysql:
+    description: 'If mysql needs to be started'
+    required: true
+    default: 'false'
+  mysql-version:
+    description: 'Mysql version'
+    required: false
+    default: '8.0'
+  mysql-entrypoint:
+    description: 'Mysql entrypoint script (folder/file)'
+    required: false
+    default: ''
 
 outputs:
   failed-tests:
@@ -32,12 +44,12 @@ runs:
     - name: 'Prepare environment'
       shell: bash
       id: "prepare"
-      run: "${{github.action_path}}prepare.sh ${{ inputs.php-version }} ${{ inputs.tests-path }} ${{ inputs.suite-test }} ${{ inputs.env-file }}"
+      run: "${{github.action_path}}prepare.sh ${{ inputs.php-version }} ${{ inputs.tests-path }} ${{ inputs.suite-test }} ${{ inputs.env-file }} ${{ inputs.mysql }} ${{ inputs.mysql-version }} ${{ inputs.mysql-entrypoint }}"
 
     - name: 'Run tests'
       shell: bash
       id: "run"
-      run: "${{github.action_path}}run.sh ${{ steps.prepare.outputs.pocketmine_name }} ${{ inputs.timeout }}"
+      run: "${{github.action_path}}run.sh ${{ steps.prepare.outputs.pocketmine_name }} ${{ inputs.timeout }} ${{ steps.prepare.outputs.mysql_name }}"
 
     - name: 'Collect results'
       shell: bash
