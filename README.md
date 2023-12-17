@@ -38,6 +38,19 @@ tests/pmmpunit
     # If your tests take longer, increase it (in seconds)
     # Default: 60 seconds
     timeout: ''
+
+    # If true, a mysql database will be started in parrallel
+    # Default: false
+    mysql: ""
+
+    # Define the mysql version to use
+    # Default: 8.0
+    mysql-version: ''
+
+    # File or folder to mount to mysql
+    # Composed of sql file, it can create the database for you
+    # Default: ''
+    mysql-entrypoint: ''
 ```
 
 ## Outputs
