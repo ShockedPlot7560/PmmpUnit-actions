@@ -1,6 +1,7 @@
 #!/bin/bash
 
-CONTAINER_PREFIX="pmmpunit-tests"
+CONTAINER_PREFIX=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 8 | head -n 1)
+echo "container_prefix=$CONTAINER_PREFIX" >> $GITHUB_OUTPUT
 PHP_VERSION=$1
 TESTS_PATH=$2
 SUITE_TEST=$3
