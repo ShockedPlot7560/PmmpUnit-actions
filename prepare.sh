@@ -15,7 +15,6 @@ MYSQL_VERSION=$6
 MYSQL_ENTRYPOINT=$7
 
 docker network create $NETWORK_NAME || true
-docker rm -f $POCKETMINE_NAME || true
 
 if [ -n "$MYSQL_ENABLED" ] && [ "$MYSQL_ENABLED" = "true" ]; then
 	./external/mysql/prepare.sh $NETWORK_NAME $CONTAINER_PREFIX $ENV_FILE $MYSQL_VERSION $MYSQL_ENTRYPOINT
