@@ -56,7 +56,7 @@ runs:
       id: "finish"
       run: "${{github.action_path}}exitpoint.sh ${{ steps.prepare.outputs.pocketmine_name }}"
 
-  post:
     - name: "Cleanup"
+      if: always()
       shell: bash
       run: "${{github.action_path}}cleanup.sh ${{ steps.prepare.outputs.container_prefix }}
