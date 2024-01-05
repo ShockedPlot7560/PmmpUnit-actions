@@ -59,4 +59,4 @@ runs:
     - name: "Cleanup"
       if: always()
       shell: bash
-      run: "${{github.action_path}}cleanup.sh ${{ steps.prepare.outputs.container_prefix }}
+      run: "${{github.action_path}}cleanup.sh ${{ steps.prepare.outputs.container_prefix }}"
